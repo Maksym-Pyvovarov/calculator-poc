@@ -9,13 +9,23 @@ import {
 	FormControl,
 	OutlinedInput,
 	InputLabel,
+	Typography,
 } from '@mui/material';
 import {useState} from 'react';
+import moment from 'moment';
+import 'moment/locale/en-gb';
 import PartnerSelect from './components/PartnerSelect/PartnerSelect';
 import PracticeSelect from './components/PracticeSelect/PracticeSelect';
 import MUIDatePicker from './components/DatePicker/DatePicker';
 import CurrencySelect from './components/CurrencySelect/CurrencySelect';
-import moment from 'moment';
+import DataTable from './components/DataTable/DataTable';
+
+// Создаём кастомную локаль
+moment.updateLocale('en-custom', {
+	week: {
+		dow: 1, // Начало недели с понедельника
+	},
+});
 
 import './App.css';
 
@@ -91,20 +101,22 @@ function App() {
 					className='container'
 					sx={{
 						display: 'flex',
+						flexDirection: 'column',
 						justifyContent: 'center',
+						alignItems: 'center',
 						background: '#fff',
-						height: '100vh',
+						minHeight: '100vh',
 					}}
 				>
 					<Box
-						padding='24px 12px'
-						borderRadius='8px'
 						component='form'
 						sx={{
 							'& .MuiTextField-root': {m: 1},
 							display: 'flex',
 							flexDirection: 'column',
 							backgroundColor: '#fff',
+							padding: '24px 12px',
+							borderRadius: '8px',
 						}}
 						noValidate
 						autoComplete='off'
@@ -116,13 +128,12 @@ function App() {
 							label='Назва проєкту'
 							variant='outlined'
 							sx={{
-								alignSelf: 'center',
-								width: '500px',
+								width: '516px',
 							}}
 							value={projectName}
 							onChange={e => setProjectName(e.target.value.trim())}
 						/>
-						<Box sx={{display: 'flex', justifyContent: 'center'}}>
+						<Box sx={{display: 'flex'}}>
 							{/* Practice select */}
 							<PracticeSelect
 								practice={selectedPractice}
@@ -134,7 +145,7 @@ function App() {
 								partner={selectedPartner}
 							/>
 						</Box>
-						<Box borderTop={'1px solid #e9561d'}>
+						<Box sx={{display: 'flex', borderTop: '1px solid #e9561d'}}>
 							<Box
 								sx={{
 									display: 'flex',
@@ -166,6 +177,20 @@ function App() {
 									}}
 									value={projectDuration}
 									onChange={e => handleDurationChange(e.target.value)}
+								/>
+								<TextField
+									required
+									sx={{width: '250px'}}
+									id='outlined-number'
+									label='Курс на дату розрахунку'
+									type='number'
+									slotProps={{
+										inputLabel: {
+											shrink: true,
+										},
+									}}
+									value={exchangeRate}
+									onChange={e => handleRateChange(e.target.value)}
 								/>
 								<Box sx={{display: 'flex'}}>
 									{/* Discount percentage */}
@@ -220,22 +245,45 @@ function App() {
 									onChange={e => handleExpensesChange(e.target.value)}
 								/>
 								{/* Exchange rate */}
-								<TextField
-									sx={{width: '250px'}}
-									id='outlined-number'
-									label='Курс на дату розрахунку'
-									type='number'
-									slotProps={{
-										inputLabel: {
-											shrink: true,
-										},
-									}}
-									value={exchangeRate}
-									onChange={e => handleRateChange(e.target.value)}
-								/>
+							</Box>
+							<Box
+								sx={{
+									'& .value': {
+										color: 'primary.main',
+										fontSize: '32px',
+										fontWeight: '700',
+									},
+									'& .caption': {
+										fontWeight: '500',
+									},
+									padding: '24px 48px 24px 96px',
+									display: 'flex',
+									flexDirection: 'column',
+									justifyContent: 'center',
+									textAlign: 'center',
+									gap: '40px',
+								}}
+							>
+								<Box>
+									<Typography className='value'>65 700</Typography>
+									<Typography className='caption'>
+										Загальна вартість, USD
+									</Typography>
+								</Box>
+								<Box>
+									<Typography className='value'>2 759 400</Typography>
+									<Typography className='caption'>
+										Загальна вартість, UAH
+									</Typography>
+								</Box>
+								<Box>
+									<Typography className='value'>81%</Typography>
+									<Typography className='caption'>Прибуток, %</Typography>
+								</Box>
 							</Box>
 						</Box>
 					</Box>
+					<DataTable />
 				</Container>
 			</ThemeProvider>
 		</>

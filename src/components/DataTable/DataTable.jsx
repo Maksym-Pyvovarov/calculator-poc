@@ -2,64 +2,216 @@ import Box from '@mui/material/Box';
 import {DataGrid} from '@mui/x-data-grid';
 
 const columns = [
-	{field: 'id', headerName: 'ID', width: 90},
+	{field: 'id', headerName: 'ID', hideable: true, width: 0},
+	{field: 'grade', headerName: 'Грейд', width: 200, sortable: false},
 	{
-		field: 'firstName',
-		headerName: 'First name',
-		width: 150,
+		field: 'peopleQuantity',
+		headerName: 'Кількість залучених людей',
+		width: 200,
 		editable: true,
-	},
-	{
-		field: 'lastName',
-		headerName: 'Last name',
-		width: 150,
-		editable: true,
-	},
-	{
-		field: 'age',
-		headerName: 'Age',
-		type: 'number',
-		width: 110,
-		editable: true,
-	},
-	{
-		field: 'fullName',
-		headerName: 'Full name',
-		description: 'This column has a value getter and is not sortable.',
 		sortable: false,
-		width: 160,
-		valueGetter: (value, row) => `${row.firstName || ''} ${row.lastName || ''}`,
+		type: 'number',
 	},
+	{
+		field: 'involvement',
+		headerName: '% залучення',
+		width: 200,
+		editable: true,
+		type: 'number',
+		sortable: false,
+	},
+	{
+		field: 'peopleHours',
+		headerName: 'Кількість людино-годин',
+		type: 'number',
+		width: 250,
+		editable: false,
+		sortable: false,
+	},
+	{
+		field: 'usdRate',
+		headerName: 'Ставка, USD',
+		type: 'number',
+		width: 150,
+		editable: false,
+		sortable: false,
+	},
+	{
+		field: 'usdCost',
+		headerName: 'Вартість, USD',
+		type: 'number',
+		width: 150,
+		editable: false,
+		sortable: false,
+	},
+	{
+		field: 'usdPrimeCost',
+		headerName: 'Собівартість, USD',
+		type: 'number',
+		width: 176,
+		editable: false,
+		sortable: false,
+	},
+	{
+		field: 'usdProfit',
+		headerName: 'Прибуток, USD',
+		type: 'number',
+		width: 150,
+		editable: false,
+		sortable: false,
+	},
+	// {
+	// 	field: 'fullName',
+	// 	headerName: 'Full name',
+	// 	description: 'This column has a value getter and is not sortable.',
+	// 	sortable: false,
+	// 	width: 160,
+	// 	valueGetter: (value, row) => `${row.firstName || ''} ${row.lastName || ''}`,
+	// },
 ];
 
 const rows = [
-	{id: 1, lastName: 'Snow', firstName: 'Jon', age: 14},
-	{id: 2, lastName: 'Lannister', firstName: 'Cersei', age: 31},
-	{id: 3, lastName: 'Lannister', firstName: 'Jaime', age: 31},
-	{id: 4, lastName: 'Stark', firstName: 'Arya', age: 11},
-	{id: 5, lastName: 'Targaryen', firstName: 'Daenerys', age: null},
-	{id: 6, lastName: 'Melisandre', firstName: null, age: 150},
-	{id: 7, lastName: 'Clifford', firstName: 'Ferrara', age: 44},
-	{id: 8, lastName: 'Frances', firstName: 'Rossini', age: 36},
-	{id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65},
+	{
+		id: 1,
+		grade: 'Партнер',
+		peopleQuantity: 0,
+		involvement: 0,
+		peopleHours: 100,
+		usdRate: 350,
+		usdCost: 35000,
+		usdPrimeCost: 4793,
+		usdProfit: 30207,
+	},
+	{
+		id: 2,
+		grade: 'Радник',
+		peopleQuantity: 0,
+		involvement: 0,
+		peopleHours: 100,
+		usdRate: 350,
+		usdCost: 35000,
+		usdPrimeCost: 4793,
+		usdProfit: 30207,
+	},
+	{
+		id: 3,
+		grade: 'Старший юрист',
+		peopleQuantity: 0,
+		involvement: 0,
+		peopleHours: 100,
+		usdRate: 350,
+		usdCost: 35000,
+		usdPrimeCost: 4793,
+		usdProfit: 30207,
+	},
+	{
+		id: 4,
+		grade: 'Юрист',
+		peopleQuantity: 0,
+		involvement: 0,
+		peopleHours: 100,
+		usdRate: 350,
+		usdCost: 35000,
+		usdPrimeCost: 4793,
+		usdProfit: 30207,
+	},
+	{
+		id: 5,
+		grade: 'Молодший юрист',
+		peopleQuantity: 0,
+		involvement: 0,
+		peopleHours: 100,
+		usdRate: 350,
+		usdCost: 35000,
+		usdPrimeCost: 4793,
+		usdProfit: 30207,
+	},
+	{
+		id: 6,
+		grade: 'Помічник юриста',
+		peopleQuantity: 0,
+		involvement: 0,
+		peopleHours: 100,
+		usdRate: 350,
+		usdCost: 35000,
+		usdPrimeCost: 4793,
+		usdProfit: 30207,
+	},
+	{
+		id: 7,
+		grade: 'Адмін.менеджер',
+		peopleQuantity: 0,
+		involvement: 0,
+		peopleHours: 100,
+		usdRate: 350,
+		usdCost: 35000,
+		usdPrimeCost: 4793,
+		usdProfit: 30207,
+	},
 ];
 
 export default function DataTable() {
 	return (
-		<Box sx={{height: 400, width: '100%'}}>
+		<Box
+			sx={{
+				'& .css-1gqmilo-MuiDataGrid-columnHeaderTitle': {
+					whiteSpace: 'normal',
+				},
+				'& .css-twqb3m-MuiDataGrid-root .MuiDataGrid-columnHeader--alignRight .MuiDataGrid-columnHeaderTitleContainer':
+					{textAlign: 'left', flexDirection: 'row'},
+				'& .css-twqb3m-MuiDataGrid-root .MuiDataGrid-cell--textRight': {
+					textAlign: 'left',
+				},
+				width: '100%',
+				marginBottom: '96px',
+			}}
+		>
 			<DataGrid
+				sx={{borderBottomLeftRadius: '0', borderBottomRightRadius: '0'}}
 				rows={rows}
 				columns={columns}
 				initialState={{
-					pagination: {
-						paginationModel: {
-							pageSize: 5,
+					columns: {
+						columnVisibilityModel: {
+							id: false,
 						},
 					},
 				}}
 				pageSizeOptions={[5]}
 				disableRowSelectionOnClick
+				disableColumnMenu
+				disableColumnResize
+				hideFooter
+				onStateChange={e => console.log(e.rows.dataRowIdToModelLookup)}
 			/>
+			<Box
+				sx={{
+					width: '100%',
+					background: '#e9561d',
+					color: '#fff',
+					borderBottomLeftRadius: '4px',
+					borderBottomRightRadius: '4px',
+					padding: '4px',
+					display: 'grid',
+					gridTemplateColumns:
+						'200px 200px 200px 250px 150px 150px 176px 150px',
+					'& .cell': {
+						padding: '0 10px',
+						textAlign: 'left',
+					},
+				}}
+			>
+				<Box className='cell' sx={{textAlign: 'left !important'}}>
+					Всього
+				</Box>
+				<Box className='cell'></Box>
+				<Box className='cell'></Box>
+				<Box className='cell'>500</Box>
+				<Box className='cell'></Box>
+				<Box className='cell'>91000</Box>
+				<Box className='cell'>10332</Box>
+				<Box className='cell'>80668</Box>
+			</Box>
 		</Box>
 	);
 }

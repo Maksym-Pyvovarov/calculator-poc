@@ -254,8 +254,8 @@ function App() {
 		setTotalCostUAH(totalCostUSD * exchangeRate);
 
 		setTotalProfit(
-			((totalCostUAH - tableTotalPrimeCostUSD - additionalExpenses) /
-				totalCostUAH) *
+			((totalCostUSD - tableTotalPrimeCostUSD - additionalExpenses) /
+				totalCostUSD) *
 				100
 		);
 
@@ -305,7 +305,7 @@ function App() {
 
 	const handleDateChange = newDate => {
 		setSelectedDate(newDate);
-		console.log('Дата:', moment(newDate._d).format('DD.MM.YYYY'));
+		// console.log('Дата:', moment(newDate._d).format('DD.MM.YYYY'));
 	};
 
 	const handleCurrencyChange = newCurrency => {
@@ -569,7 +569,7 @@ function App() {
 								</Box>
 								<Box>
 									<Typography className='value'>
-										{totalProfit.toFixed(2)}%
+										{totalProfit ? totalProfit.toFixed(2) + '%' : 0}
 									</Typography>
 									<Typography className='caption'>Прибуток, %</Typography>
 								</Box>

@@ -1,156 +1,17 @@
 import Box from '@mui/material/Box';
 import {DataGrid} from '@mui/x-data-grid';
+// import React, {useState, useEffect} from 'react';
+import PropTypes from 'prop-types';
 
-const columns = [
-	{field: 'id', headerName: 'ID', hideable: true, width: 0},
-	{field: 'grade', headerName: 'Грейд', width: 200, sortable: false},
-	{
-		field: 'peopleQuantity',
-		headerName: 'Кількість залучених людей',
-		width: 200,
-		editable: true,
-		sortable: false,
-		type: 'number',
-	},
-	{
-		field: 'involvement',
-		headerName: '% залучення',
-		width: 200,
-		editable: true,
-		type: 'number',
-		sortable: false,
-	},
-	{
-		field: 'peopleHours',
-		headerName: 'Кількість людино-годин',
-		type: 'number',
-		width: 250,
-		editable: false,
-		sortable: false,
-	},
-	{
-		field: 'usdRate',
-		headerName: 'Ставка, USD',
-		type: 'number',
-		width: 150,
-		editable: false,
-		sortable: false,
-	},
-	{
-		field: 'usdCost',
-		headerName: 'Вартість, USD',
-		type: 'number',
-		width: 150,
-		editable: false,
-		sortable: false,
-	},
-	{
-		field: 'usdPrimeCost',
-		headerName: 'Собівартість, USD',
-		type: 'number',
-		width: 176,
-		editable: false,
-		sortable: false,
-	},
-	{
-		field: 'usdProfit',
-		headerName: 'Прибуток, USD',
-		type: 'number',
-		width: 150,
-		editable: false,
-		sortable: false,
-	},
-	// {
-	// 	field: 'fullName',
-	// 	headerName: 'Full name',
-	// 	description: 'This column has a value getter and is not sortable.',
-	// 	sortable: false,
-	// 	width: 160,
-	// 	valueGetter: (value, row) => `${row.firstName || ''} ${row.lastName || ''}`,
-	// },
-];
-
-const rows = [
-	{
-		id: 1,
-		grade: 'Партнер',
-		peopleQuantity: 0,
-		involvement: 0,
-		peopleHours: 100,
-		usdRate: 350,
-		usdCost: 35000,
-		usdPrimeCost: 4793,
-		usdProfit: 30207,
-	},
-	{
-		id: 2,
-		grade: 'Радник',
-		peopleQuantity: 0,
-		involvement: 0,
-		peopleHours: 100,
-		usdRate: 350,
-		usdCost: 35000,
-		usdPrimeCost: 4793,
-		usdProfit: 30207,
-	},
-	{
-		id: 3,
-		grade: 'Старший юрист',
-		peopleQuantity: 0,
-		involvement: 0,
-		peopleHours: 100,
-		usdRate: 350,
-		usdCost: 35000,
-		usdPrimeCost: 4793,
-		usdProfit: 30207,
-	},
-	{
-		id: 4,
-		grade: 'Юрист',
-		peopleQuantity: 0,
-		involvement: 0,
-		peopleHours: 100,
-		usdRate: 350,
-		usdCost: 35000,
-		usdPrimeCost: 4793,
-		usdProfit: 30207,
-	},
-	{
-		id: 5,
-		grade: 'Молодший юрист',
-		peopleQuantity: 0,
-		involvement: 0,
-		peopleHours: 100,
-		usdRate: 350,
-		usdCost: 35000,
-		usdPrimeCost: 4793,
-		usdProfit: 30207,
-	},
-	{
-		id: 6,
-		grade: 'Помічник юриста',
-		peopleQuantity: 0,
-		involvement: 0,
-		peopleHours: 100,
-		usdRate: 350,
-		usdCost: 35000,
-		usdPrimeCost: 4793,
-		usdProfit: 30207,
-	},
-	{
-		id: 7,
-		grade: 'Адмін.менеджер',
-		peopleQuantity: 0,
-		involvement: 0,
-		peopleHours: 100,
-		usdRate: 350,
-		usdCost: 35000,
-		usdPrimeCost: 4793,
-		usdProfit: 30207,
-	},
-];
-
-export default function DataTable() {
+export default function DataTable({
+	columns,
+	rows,
+	onDataChange,
+	totalPeopleHours,
+	totalCostUSD,
+	totalPrimeCostUSD,
+	totalProfitUSD,
+}) {
 	return (
 		<Box
 			sx={{
@@ -182,7 +43,13 @@ export default function DataTable() {
 				disableColumnMenu
 				disableColumnResize
 				hideFooter
-				onStateChange={e => console.log(e.rows.dataRowIdToModelLookup)}
+				processRowUpdate={row => {
+					onDataChange(row);
+					return row;
+				}}
+				onProcessRowUpdateError={error => {
+					console.error('Error updating row:', error);
+				}}
 			/>
 			<Box
 				sx={{
@@ -191,7 +58,7 @@ export default function DataTable() {
 					color: '#fff',
 					borderBottomLeftRadius: '4px',
 					borderBottomRightRadius: '4px',
-					padding: '4px',
+					padding: '4px 0',
 					display: 'grid',
 					gridTemplateColumns:
 						'200px 200px 200px 250px 150px 150px 176px 150px',
@@ -206,12 +73,22 @@ export default function DataTable() {
 				</Box>
 				<Box className='cell'></Box>
 				<Box className='cell'></Box>
-				<Box className='cell'>500</Box>
+				<Box className='cell'>{Number(totalPeopleHours).toLocaleString()}</Box>
 				<Box className='cell'></Box>
-				<Box className='cell'>91000</Box>
-				<Box className='cell'>10332</Box>
-				<Box className='cell'>80668</Box>
+				<Box className='cell'>{Number(totalCostUSD).toLocaleString()}</Box>
+				<Box className='cell'>{Number(totalPrimeCostUSD).toLocaleString()}</Box>
+				<Box className='cell'>{Number(totalProfitUSD).toLocaleString()}</Box>
 			</Box>
 		</Box>
 	);
 }
+
+DataTable.propTypes = {
+	columns: PropTypes.array.isRequired,
+	rows: PropTypes.array.isRequired,
+	onDataChange: PropTypes.func.isRequired,
+	totalPeopleHours: PropTypes.number.isRequired,
+	totalCostUSD: PropTypes.number.isRequired,
+	totalPrimeCostUSD: PropTypes.number.isRequired,
+	totalProfitUSD: PropTypes.number.isRequired,
+};

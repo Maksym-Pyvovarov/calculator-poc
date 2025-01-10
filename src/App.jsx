@@ -11,7 +11,7 @@ import {
 	InputLabel,
 	Typography,
 } from '@mui/material';
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import moment from 'moment';
 import 'moment/locale/en-gb';
 import PartnerSelect from './components/PartnerSelect/PartnerSelect';
@@ -49,6 +49,251 @@ function App() {
 	const [projectDuration, setProjectDuration] = useState(0);
 	const [additionalExpenses, setAdditionalExpenses] = useState(0);
 	const [exchangeRate, setExchangeRate] = useState(0);
+
+	const [totalCostUSD, setTotalCostUSD] = useState(0);
+	const [totalCostUAH, setTotalCostUAH] = useState(0);
+	const [totalProfit, setTotalProfit] = useState(0);
+
+	const [tableData, setTableData] = useState([
+		{
+			id: 1,
+			grade: 'Партнер',
+			peopleQuantity: 0,
+			involvement: 0,
+			peopleHours: 0,
+			usdRate: 350,
+			usdCost: 0,
+			usdPrimeCost: 0,
+			usdProfit: 0,
+			rate: 48,
+		},
+		{
+			id: 2,
+			grade: 'Радник',
+			peopleQuantity: 0,
+			involvement: 0,
+			peopleHours: 0,
+			usdRate: 250,
+			usdCost: 0,
+			usdPrimeCost: 0,
+			usdProfit: 0,
+			rate: 28,
+		},
+		{
+			id: 3,
+			grade: 'Старший юрист',
+			peopleQuantity: 0,
+			involvement: 0,
+			peopleHours: 0,
+			usdRate: 200,
+			usdCost: 0,
+			usdPrimeCost: 0,
+			usdProfit: 0,
+			rate: 21,
+		},
+		{
+			id: 4,
+			grade: 'Юрист',
+			peopleQuantity: 0,
+			involvement: 0,
+			peopleHours: 0,
+			usdRate: 150,
+			usdCost: 0,
+			usdPrimeCost: 0,
+			usdProfit: 0,
+			rate: 11,
+		},
+		{
+			id: 5,
+			grade: 'Молодший юрист',
+			peopleQuantity: 0,
+			involvement: 0,
+			peopleHours: 0,
+			usdRate: 100,
+			usdCost: 0,
+			usdPrimeCost: 0,
+			usdProfit: 0,
+			rate: 5,
+		},
+		{
+			id: 6,
+			grade: 'Помічник юриста',
+			peopleQuantity: 0,
+			involvement: 0,
+			peopleHours: 0,
+			usdRate: 80,
+			usdCost: 0,
+			usdPrimeCost: 0,
+			usdProfit: 0,
+			rate: 6,
+		},
+		{
+			id: 7,
+			grade: 'Адмін.менеджер',
+			peopleQuantity: 0,
+			involvement: 0,
+			peopleHours: 0,
+			usdRate: 50,
+			usdCost: 0,
+			usdPrimeCost: 0,
+			usdProfit: 0,
+			rate: 9,
+		},
+	]);
+
+	const columns = [
+		{field: 'id', headerName: 'ID', hideable: true, width: 0},
+		{field: 'grade', headerName: 'Грейд', width: 200, sortable: false},
+		{
+			field: 'peopleQuantity',
+			headerName: 'Кількість залучених людей',
+			width: 200,
+			editable: true,
+			sortable: false,
+			type: 'number',
+		},
+		{
+			field: 'involvement',
+			headerName: '% залучення',
+			width: 200,
+			editable: true,
+			type: 'number',
+			sortable: false,
+		},
+		{
+			field: 'peopleHours',
+			headerName: 'Кількість людино-годин',
+			type: 'number',
+			width: 250,
+			editable: false,
+			sortable: false,
+			valueGetter: (value, row) => {
+				return (
+					projectDuration * row.peopleQuantity * (row.involvement / 100) * 40
+				);
+			},
+		},
+		{
+			field: 'usdRate',
+			headerName: 'Ставка, USD',
+			type: 'number',
+			width: 150,
+			editable: false,
+			sortable: false,
+		},
+		{
+			field: 'usdCost',
+			headerName: 'Вартість, USD',
+			type: 'number',
+			width: 150,
+			editable: false,
+			sortable: false,
+			valueGetter: (value, row) => {
+				return (
+					projectDuration *
+					5 *
+					8 *
+					row.peopleQuantity *
+					(row.involvement / 100) *
+					row.usdRate
+				);
+			},
+		},
+		{
+			field: 'usdPrimeCost',
+			headerName: 'Собівартість, USD',
+			type: 'number',
+			width: 176,
+			editable: false,
+			sortable: false,
+			valueGetter: (value, row) => {
+				return row.rate * row.peopleHours;
+			},
+		},
+		{
+			field: 'usdProfit',
+			headerName: 'Прибуток, USD',
+			type: 'number',
+			width: 150,
+			editable: false,
+			sortable: false,
+			valueGetter: (value, row) => {
+				return row.usdCost - row.usdPrimeCost;
+			},
+		},
+	];
+
+	const [tableTotalPeopleHours, setTableTotalPeopleHours] = useState(0);
+	const [tableTotalCostUSD, setTableTotalCostUSD] = useState(0);
+	const [tableTotalPrimeCostUSD, setTableTotalPrimeCostUSD] = useState(0);
+	const [tableTotalProfitUSD, setTableTotalProfitUSD] = useState(0);
+
+	useEffect(() => {
+		setTableTotalPeopleHours(
+			tableData.reduce((sum, current) => sum + current.peopleHours, 0)
+		);
+		setTableTotalCostUSD(
+			tableData.reduce((sum, current) => sum + current.usdCost, 0)
+		);
+
+		setTableTotalPrimeCostUSD(
+			tableData.reduce((sum, current) => sum + current.usdPrimeCost, 0)
+		);
+
+		setTableTotalProfitUSD(
+			tableData.reduce((sum, current) => sum + current.usdProfit, 0)
+		);
+
+		setTotalCostUSD(
+			tableTotalCostUSD +
+				tableTotalCostUSD * (riskPercentage / 100) -
+				tableTotalCostUSD * (discountPercentage / 100) +
+				additionalExpenses
+		);
+
+		setTotalCostUAH(totalCostUSD * exchangeRate);
+
+		setTotalProfit(
+			((totalCostUAH - tableTotalPrimeCostUSD - additionalExpenses) /
+				totalCostUAH) *
+				100
+		);
+
+		setTableData(
+			tableData.map(item => {
+				return {
+					...item,
+					peopleHours: Number(
+						(
+							projectDuration *
+							item.peopleQuantity *
+							(item.involvement / 100) *
+							40
+						).toFixed(2)
+					),
+					usdCost: Number(
+						(
+							projectDuration *
+							5 *
+							8 *
+							item.peopleQuantity *
+							(item.involvement / 100) *
+							item.usdRate
+						).toFixed(2)
+					),
+					usdPrimeCost: Number(item.peopleHours * item.rate),
+					usdProfit: Number(item.usdCost - item.usdPrimeCost),
+				};
+			})
+		);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [
+		tableData,
+		projectDuration,
+		discountPercentage,
+		riskPercentage,
+		additionalExpenses,
+	]);
 
 	const handlePartnerChange = newPartner => {
 		setSelectedPartner(newPartner);
@@ -90,6 +335,48 @@ function App() {
 	const handleRateChange = newRate => {
 		if (newRate >= 0) setExchangeRate(Number(newRate));
 		else return;
+	};
+
+	const handleTableDataChange = newData => {
+		setTableData(prevData =>
+			prevData.map(item =>
+				item.id === newData.id
+					? {
+							...item,
+							...newData,
+							peopleHours: Number(
+								(
+									projectDuration *
+									newData.peopleQuantity *
+									(newData.involvement / 100) *
+									40
+								).toFixed(2)
+							),
+							usdCost: Number(
+								(
+									projectDuration *
+									5 *
+									8 *
+									newData.peopleQuantity *
+									(newData.involvement / 100) *
+									newData.usdRate
+								).toFixed(2)
+							),
+							usdPrimeCost: Number(newData.peopleHours * newData.rate),
+							usdProfit: Number(item.usdCost - item.usdPrimeCost),
+					  }
+					: item
+			)
+		);
+
+		setTotalCostUSD(
+			tableTotalCostUSD +
+				tableTotalCostUSD * (riskPercentage / 100) -
+				tableTotalCostUSD * (discountPercentage / 100) +
+				additionalExpenses
+		);
+
+		setTotalCostUAH(totalCostUSD * exchangeRate);
 	};
 
 	return (
@@ -265,25 +552,40 @@ function App() {
 								}}
 							>
 								<Box>
-									<Typography className='value'>65 700</Typography>
+									<Typography className='value'>
+										{Number(totalCostUSD).toLocaleString()}
+									</Typography>
 									<Typography className='caption'>
 										Загальна вартість, USD
 									</Typography>
 								</Box>
 								<Box>
-									<Typography className='value'>2 759 400</Typography>
+									<Typography className='value'>
+										{Number(totalCostUAH).toLocaleString()}
+									</Typography>
 									<Typography className='caption'>
 										Загальна вартість, UAH
 									</Typography>
 								</Box>
 								<Box>
-									<Typography className='value'>81%</Typography>
+									<Typography className='value'>
+										{totalProfit.toFixed(2)}%
+									</Typography>
 									<Typography className='caption'>Прибуток, %</Typography>
 								</Box>
 							</Box>
 						</Box>
 					</Box>
-					<DataTable />
+					{/* Data Table */}
+					<DataTable
+						columns={columns}
+						rows={tableData}
+						onDataChange={handleTableDataChange}
+						totalPeopleHours={tableTotalPeopleHours}
+						totalCostUSD={tableTotalCostUSD}
+						totalPrimeCostUSD={tableTotalPrimeCostUSD}
+						totalProfitUSD={tableTotalProfitUSD}
+					/>
 				</Container>
 			</ThemeProvider>
 		</>

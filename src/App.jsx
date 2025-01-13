@@ -19,6 +19,7 @@ import PracticeSelect from './components/PracticeSelect/PracticeSelect';
 import MUIDatePicker from './components/DatePicker/DatePicker';
 import CurrencySelect from './components/CurrencySelect/CurrencySelect';
 import DataTable from './components/DataTable/DataTable';
+import ExportButton from './components/ExportButton/ExportButton';
 
 // Создаём кастомную локаль
 moment.updateLocale('en-custom', {
@@ -576,6 +577,8 @@ function App() {
 							</Box>
 						</Box>
 					</Box>
+
+					
 					{/* Data Table */}
 					<DataTable
 						columns={columns}
@@ -586,6 +589,21 @@ function App() {
 						totalPrimeCostUSD={tableTotalPrimeCostUSD}
 						totalProfitUSD={tableTotalProfitUSD}
 					/>
+					{/*Export Button*/}
+					<ExportButton projectName={projectName}
+						selectedPractice={selectedPractice}
+						selectedPartner={selectedPartner}
+						selectedDate={selectedDate}
+						selectedCurrency={selectedCurrency}
+						discountPercentage={discountPercentage}
+						riskPercentage={riskPercentage}
+						projectDuration={projectDuration}
+						additionalExpenses={additionalExpenses}
+						exchangeRate={exchangeRate}
+						totalCostUSD={totalCostUSD}
+						totalCostUAH={totalCostUAH}
+						totalProfit={totalProfit}
+						tableData={tableData} />
 				</Container>
 			</ThemeProvider>
 		</>

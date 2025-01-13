@@ -465,6 +465,7 @@ function App() {
 									value={projectDuration}
 									onChange={e => handleDurationChange(e.target.value)}
 								/>
+								{/* Exchange rate */}
 								<TextField
 									required
 									sx={{width: '250px'}}
@@ -475,6 +476,9 @@ function App() {
 										inputLabel: {
 											shrink: true,
 										},
+									}}
+									inputProps={{
+										step: '0.1', // Позволяет вводить дробные числа
 									}}
 									value={exchangeRate}
 									onChange={e => handleRateChange(e.target.value)}

@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 
 export default function MUIDatePicker({date, onDateChange}) {
 	return (
-		<Box sx={{m: 1, '& .date-picker': {m: 0}}}>
+		<Box sx={{m: 0, '& .date-picker': {m: 1}}}>
 			<LocalizationProvider dateAdapter={AdapterMoment} adapterLocale='de'>
 				<DatePicker
 					sx={{width: '250px'}}

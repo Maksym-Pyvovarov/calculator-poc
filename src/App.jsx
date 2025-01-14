@@ -394,53 +394,49 @@ function App() {
 						alignItems: 'center',
 						background: '#fff',
 						minHeight: '100vh',
+						paddingBlock: '24px',
 					}}
 				>
+					<Typography sx={{fontWeight: 700, fontSize: '32px'}}>
+						Калькулятор розрахунку вартості проєкту
+					</Typography>
 					<Box
 						component='form'
 						sx={{
 							'& .MuiTextField-root': {m: 1},
+							'& .css-k008qs': {flexWrap: 'wrap'},
+							width: '100%',
 							display: 'flex',
-							flexDirection: 'column',
+							gap: '2rem',
+							justifyContent: 'center',
 							backgroundColor: '#fff',
-							padding: '24px 12px',
+							padding: '24px 12px 32px',
 							borderRadius: '8px',
+							flexWrap: 'wrap',
 						}}
 						noValidate
 						autoComplete='off'
 					>
-						{/* Project name */}
-						<TextField
-							required
-							id='projectName'
-							label='Назва проєкту'
-							variant='outlined'
+						<Box
 							sx={{
-								width: '516px',
+								display: 'flex',
+								flexDirection: 'column',
 							}}
-							value={projectName}
-							onChange={e => setProjectName(e.target.value.trim())}
-						/>
-						<Box sx={{display: 'flex'}}>
-							{/* Practice select */}
-							<PracticeSelect
-								practice={selectedPractice}
-								onPracticeChange={handlePracticeChange}
-							/>
-							{/* Partner select */}
-							<PartnerSelect
-								onPartnerChange={handlePartnerChange}
-								partner={selectedPartner}
-							/>
-						</Box>
-						<Box sx={{display: 'flex', borderTop: '1px solid #e9561d'}}>
-							<Box
+						>
+							{/* Project name */}
+							<TextField
+								required
+								id='projectName'
+								label='Назва проєкту'
+								variant='outlined'
 								sx={{
-									display: 'flex',
-									flexDirection: 'column',
-									justifyContent: 'flex-start',
+									width: '100%',
+									maxWidth: '516px',
 								}}
-							>
+								value={projectName}
+								onChange={e => setProjectName(e.target.value.trim())}
+							/>
+							<Box sx={{display: 'flex'}}>
 								{/* Date picker */}
 								<MUIDatePicker
 									date={selectedDate}
@@ -451,6 +447,8 @@ function App() {
 									currency={selectedCurrency}
 									onCurrencyChange={handleCurrencyChange}
 								/>
+							</Box>
+							<Box sx={{display: 'flex'}}>
 								{/* Project duration */}
 								<TextField
 									required
@@ -465,24 +463,6 @@ function App() {
 									}}
 									value={projectDuration}
 									onChange={e => handleDurationChange(e.target.value)}
-								/>
-								{/* Exchange rate */}
-								<TextField
-									required
-									sx={{width: '250px'}}
-									id='outlined-number'
-									label='Курс на дату розрахунку'
-									type='number'
-									slotProps={{
-										inputLabel: {
-											shrink: true,
-										},
-									}}
-									inputProps={{
-										step: '0.1', // Позволяет вводить дробные числа
-									}}
-									value={exchangeRate}
-									onChange={e => handleRateChange(e.target.value)}
 								/>
 								<Box sx={{display: 'flex'}}>
 									{/* Discount percentage */}
@@ -522,6 +502,28 @@ function App() {
 										/>
 									</FormControl>
 								</Box>
+							</Box>
+						</Box>
+						<Box
+							sx={{
+								display: 'flex',
+								flexDirection: 'column',
+								justifyContent: 'flex-start',
+							}}
+						>
+							<Box sx={{display: 'flex'}}>
+								{/* Practice select */}
+								<PracticeSelect
+									practice={selectedPractice}
+									onPracticeChange={handlePracticeChange}
+								/>
+								{/* Partner select */}
+								<PartnerSelect
+									onPartnerChange={handlePartnerChange}
+									partner={selectedPartner}
+								/>
+							</Box>
+							<Box sx={{display: 'flex'}}>
 								{/* Additional expenses */}
 								<TextField
 									sx={{width: '250px'}}
@@ -536,7 +538,25 @@ function App() {
 									value={additionalExpenses}
 									onChange={e => handleExpensesChange(e.target.value)}
 								/>
+
 								{/* Exchange rate */}
+								<TextField
+									required
+									sx={{width: '250px'}}
+									id='outlined-number'
+									label='Курс на дату розрахунку'
+									type='number'
+									slotProps={{
+										inputLabel: {
+											shrink: true,
+										},
+									}}
+									inputProps={{
+										step: '0.1', // Позволяет вводить дробные числа
+									}}
+									value={exchangeRate}
+									onChange={e => handleRateChange(e.target.value)}
+								/>
 							</Box>
 							<Box
 								sx={{
@@ -548,12 +568,11 @@ function App() {
 									'& .caption': {
 										fontWeight: '500',
 									},
-									padding: '24px 48px 24px 96px',
 									display: 'flex',
-									flexDirection: 'column',
 									justifyContent: 'center',
 									textAlign: 'center',
 									gap: '40px',
+									flexWrap: 'wrap',
 								}}
 							>
 								<Box>
@@ -582,7 +601,6 @@ function App() {
 						</Box>
 					</Box>
 
-					
 					{/* Data Table */}
 					<DataTable
 						columns={columns}
@@ -594,7 +612,8 @@ function App() {
 						totalProfitUSD={tableTotalProfitUSD}
 					/>
 					{/*Export Button*/}
-					<ExportButton projectName={projectName}
+					<ExportButton
+						projectName={projectName}
 						selectedPractice={selectedPractice}
 						selectedPartner={selectedPartner}
 						selectedDate={selectedDate}
@@ -607,7 +626,8 @@ function App() {
 						totalCostUSD={totalCostUSD}
 						totalCostUAH={totalCostUAH}
 						totalProfit={totalProfit}
-						tableData={tableData} />
+						tableData={tableData}
+					/>
 				</Container>
 			</ThemeProvider>
 		</>

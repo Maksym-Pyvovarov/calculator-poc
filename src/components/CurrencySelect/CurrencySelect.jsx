@@ -22,7 +22,7 @@ export default function CurrencySelect({currency, onCurrencyChange}) {
 			label='Валюта розрахунку'
 			onChange={e => onCurrencyChange(e.target.value)}
 			value={currency}
-			sx={{width: '250px'}}
+			sx={{width: '250px', margin: 0}}
 		>
 			{currencies.map(option => (
 				<MenuItem key={option.value} value={option.value}>

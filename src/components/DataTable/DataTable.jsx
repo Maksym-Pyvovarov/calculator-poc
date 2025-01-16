@@ -12,6 +12,7 @@ export function CustomFooterComponent({
 		<Box
 			sx={{
 				width: '100%',
+				minWidth: '1325px',
 				background: '#e9561d',
 				color: '#fff',
 				fontSize: 'inherit',
@@ -19,12 +20,10 @@ export function CustomFooterComponent({
 				borderBottomRightRadius: '4px',
 				padding: '4px 0',
 				display: 'grid',
-				// gridTemplateColumns: '200px 200px 200px 250px 150px 150px 176px 150px',
-				gridTemplateColumns: '4fr 4fr 4fr 5fr 3fr 3fr 3.52fr 3fr',
-				overflowX: 'scroll',
+				gridTemplateColumns: '200px 200px 200px 250px 150px 150px 176px 150px',
 				'& .cell': {
 					padding: '0 10px',
-					textAlign: 'left',
+					textAlign: 'right',
 				},
 			}}
 		>
@@ -54,24 +53,20 @@ export default function DataTable({
 	return (
 		<Box
 			sx={{
-				'& .css-1gqmilo-MuiDataGrid-columnHeaderTitle': {
-					whiteSpace: 'normal',
-				},
-				'& .css-twqb3m-MuiDataGrid-root .MuiDataGrid-columnHeader--alignRight .MuiDataGrid-columnHeaderTitleContainer':
-					{
-						textAlign: 'left',
-						flexDirection: 'row',
-					},
-				'& .css-twqb3m-MuiDataGrid-root .MuiDataGrid-cell--textRight': {
-					textAlign: 'left',
-				},
 				width: '100%',
 				marginBottom: '32px',
-				overflow: 'auto', // Добавлено для скроллинга
+				overflow: 'visible',
+				'@media (max-width: 1560px)': {
+					overflow: 'auto',
+				},
 			}}
 		>
 			<DataGrid
-				sx={{borderBottomLeftRadius: '0', borderBottomRightRadius: '0'}}
+				sx={{
+					borderBottomLeftRadius: '0',
+					borderBottomRightRadius: '0',
+					width: 'max-content', // Чтобы таблица занимала всю доступную ширину
+				}}
 				rows={rows}
 				columns={columns}
 				initialState={{
